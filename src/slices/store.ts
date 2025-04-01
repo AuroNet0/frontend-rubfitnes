@@ -1,5 +1,5 @@
-import { configureStore } from '@reduxjs/toolkit';
-import treinoReducer from './treino/index';
+import { configureStore } from "@reduxjs/toolkit";
+import treinoReducer from "./treino/index";
 
 export const store = configureStore({
   reducer: {
