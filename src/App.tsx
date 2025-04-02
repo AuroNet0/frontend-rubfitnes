@@ -30,7 +30,7 @@ export default function App() {
             dispatch(setTreino({ field: "tipoTreino", value: e.value }))
           }
           options={tipoDeTreino}
-          optionLabel="nome"
+          optionLabel="descricao"
           placeholder="Selecione um tipo de treino"
           filter
           className="dropdown"

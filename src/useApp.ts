@@ -9,6 +9,7 @@ interface Exercicio {
   nome: string;
   descricao: string;
 }
+
 interface TipoTreino {
   id: number;
   descricao: string;
@@ -60,7 +61,7 @@ const useApp = () => {
       percepcaoEsforco: treino.percepcaoEsforco,
       data: treino.data ? formatDate(treino.data) : undefined,
       exercicio: { id: treino.exercicio?.id },
-      tipo_treino_id: { id: treino.tipoTreino?.id },
+      tipoTreino: { id: treino.tipoTreino?.id },
     };
 
     fetch("http://localhost:8080/treinos", {
