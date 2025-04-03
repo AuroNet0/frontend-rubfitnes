@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
-import { resetTreino, setTreino } from "./slices/treino";
+import { resetTreino, setTreino } from "../../../slices/treino";
 import { useEffect, useRef, useState } from "react";
-import { RootState } from "./slices/store";
+import { RootState } from "../../../slices/store";
 import { Messages } from "primereact/messages";
 
 interface Exercicio {
@@ -15,7 +15,7 @@ interface TipoTreino {
   descricao: string;
 }
 
-const useApp = () => {
+const useTreino = () => {
   const dispatch = useDispatch();
   const treino = useSelector((state: RootState) => state.treino);
   const [exercicios, setExercicios] = useState<Exercicio[]>([]);
@@ -104,4 +104,4 @@ const useApp = () => {
   };
 };
 
-export default useApp;
+export default useTreino;
