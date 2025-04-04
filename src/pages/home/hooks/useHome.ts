@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { homeAPI } from "../apis/homeAPI";
+import { isValid, parseISO } from "date-fns";
 
 interface Treino {
   id: number;
@@ -8,36 +10,28 @@ interface Treino {
   qtdSeriesValidas: number;
   cargaValida: number;
   percepcaoEsforco: number;
-  date: Date;
+  date: string;
   exercicioNome: string;
   tipoTreinoDescricao: string;
 }
 
 const useHome = () => {
   const [treinos, setTreinos] = useState<Treino[]>([]);
+  const api = homeAPI();
 
   useEffect(() => {
-    fetch("http://localhost:8080/treinos")
-      .then((response) => response.json())
-      .then((data) => {
-        setTreinos(data);
-      })
-      .catch((error) =>
-        console.error("Erro ao carregar os exercícios:", error)
-      );
+    api.consultarTreinos().then((response) => {
+      const treinosConvertidos = response.map((treino: any) => ({
+        ...treino,
+        date: isValid(parseISO(treino.data)) ? parseISO(treino.data) : null,
+      }));
+      setTreinos(treinosConvertidos);
+    });
   }, []);
-
-  const formatDate = (date: Date) => {
-    if (!date) return "";
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const year = date.getFullYear();
-    return `${day}-${month}-${year}`;
-  };
+  
 
   return {
-    treinos,
-    formatDate,
+    treinos
   };
 };
 

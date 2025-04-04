@@ -10,7 +10,6 @@ export default function TabMenuNav() {
   const items = [
     { label: "Home", icon: "pi pi-home", command: () => navigate("/") },
     { label: "Treino", icon: "pi pi-list", command: () => navigate("/treino") },
-    { label: "Exercicio", icon: "pi pi-list", command: () => navigate("/exercicio") },
   ];
 
   return (

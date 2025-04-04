@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { Messages } from "primereact/messages";
 import "../treino/css/treino.css";
 import useTreino from "./hooks/useTreino";
+import DialogExercicio from "./dialogs";
 
 export default function Treino() {
   const {
@@ -17,6 +18,7 @@ export default function Treino() {
     msg,
     setTreino,
     clear,
+    abrirModal
   } = useTreino();
   const dispatch = useDispatch();
   return (
@@ -45,6 +47,7 @@ export default function Treino() {
           filter
           className="dropdown"
         />
+        <Button icon='pi pi-plus'onClick={()=>dispatch(abrirModal('exercicioModal'))} />
       </div>
       <div className="input-group-container">
         <InputNumber
@@ -130,6 +133,7 @@ export default function Treino() {
           className="buttonClear"
         />
       </div>
+      <DialogExercicio id="exercicioModal" />
     </div>
   );
 }

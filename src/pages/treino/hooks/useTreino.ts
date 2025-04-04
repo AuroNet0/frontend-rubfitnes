@@ -3,6 +3,8 @@ import { resetTreino, setTreino } from "../../../slices/treino";
 import { useEffect, useRef, useState } from "react";
 import { RootState } from "../../../slices/store";
 import { Messages } from "primereact/messages";
+import { abrirModal } from "../../../slices/dialogs";
+import { treinoAPI } from "../apis/treinoAPI";
 
 interface Exercicio {
   id: number;
@@ -21,6 +23,7 @@ const useTreino = () => {
   const [exercicios, setExercicios] = useState<Exercicio[]>([]);
   const [tipoDeTreino, setipoDeTreino] = useState<TipoTreino[]>([]);
   const msg = useRef<Messages>(null);
+  const api = treinoAPI();
 
   const formatDate = (date: Date) => {
     const year = date.getFullYear();
@@ -30,28 +33,11 @@ const useTreino = () => {
   };
 
   useEffect(() => {
-    fetch("http://localhost:8080/exercicios")
-      .then((response) => response.json())
-      .then((data) => {
-        setExercicios(data);
-      })
-      .catch((error) =>
-        console.error("Erro ao carregar os exercícios:", error)
-      );
+    api.consultarExercicios().then(setExercicios);
+    api.consultarTiposTreino().then(setipoDeTreino);
   }, []);
 
-  useEffect(() => {
-    fetch("http://localhost:8080/tipos")
-      .then((response) => response.json())
-      .then((data) => {
-        setipoDeTreino(data);
-      })
-      .catch((error) =>
-        console.error("Erro ao carregar os exercícios:", error)
-      );
-  }, []);
-
-  const handleInsert = () => {
+  const handleInsert = async () => {
     const treinoData = {
       descricao: treino.descricao,
       qtdSeries: treino.qtdSeries,
@@ -64,29 +50,22 @@ const useTreino = () => {
       tipoTreino: { id: treino.tipoTreino?.id },
     };
 
-    fetch("http://localhost:8080/treinos", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(treinoData),
-    })
-      .then((response) => response.json())
-      .then(() => {
-        msg.current?.show({
-          severity: "success",
-          summary: "Sucesso",
-          detail: "Treino inserido com sucesso!",
-        });
-        dispatch(resetTreino());
-      })
-      .catch(() => {
-        msg.current?.show({
-          severity: "error",
-          summary: "Erro",
-          detail: "Erro ao inserir treino.",
-        });
+    const success = await api.inserirTreino(treinoData);
+
+    if (success) {
+      msg.current?.show({
+        severity: "success",
+        summary: "Sucesso",
+        detail: "Treino inserido com sucesso!",
       });
+      dispatch(resetTreino());
+    } else {
+      msg.current?.show({
+        severity: "error",
+        summary: "Erro",
+        detail: "Erro ao inserir treino.",
+      });
+    }
   };
 
   const clear = () => {
@@ -101,6 +80,7 @@ const useTreino = () => {
     msg,
     setTreino,
     clear,
+    abrirModal
   };
 };
 

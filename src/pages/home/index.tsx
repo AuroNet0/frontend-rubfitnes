@@ -2,6 +2,7 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import useHome from "./hooks/useHome";
 import "../home/css/style.css";
+import { format } from "date-fns";
 
 export default function Home() {
   const { treinos } = useHome();
@@ -19,20 +20,26 @@ export default function Home() {
           rowsPerPageOptions={[5, 10, 25, 50]}
           tableStyle={{ minWidth: "50rem" }}
         >
-          <Column field="descricao" header="Descrição" filter></Column>
-          <Column field="qtdSeries" header="Qtd Séries" filter></Column>
+          <Column field="descricao" header="Descrição" ></Column>
+          <Column field="qtdSeries" header="Qtd Séries" ></Column>
           <Column
             field="cargaReconhecimento"
             header="Reconhecimento"
-            filter
+            
           ></Column>
-          <Column field="qtdSeriesValidas" header="Qtd Válidas" filter></Column>
-          <Column field="cargaValida" header="Válida" filter></Column>
-          <Column field="percepcaoEsforco" header="Percepção" filter></Column>
-          <Column field="date" header="Data" filter></Column>
-          <Column field="exercicioNome" header="Exercicio" filter></Column>
-          <Column field="tipoTreinoDescricao" header="Tipo" filter></Column>
-          <Column field="acoes" header="Ações" filter></Column>
+          <Column field="qtdSeriesValidas" header="Qtd Válidas" ></Column>
+          <Column field="cargaValida" header="Válida" ></Column>
+          <Column field="percepcaoEsforco" header="Percepção" ></Column>
+          <Column
+            field="date"
+            header="Data"
+            body={(rowData) =>
+              rowData.date ? format(rowData.date, "dd/MM/yyyy") : ""
+            }
+          />
+          <Column field="exercicioNome" header="Exercicio" ></Column>
+          <Column field="tipoTreinoDescricao" header="Tipo" filter ></Column>
+          <Column field="acoes" header="Ações" ></Column>
         </DataTable>
       </div>
     </div>
