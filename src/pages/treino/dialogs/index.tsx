@@ -13,6 +13,7 @@ interface ModalProps {
 }
 
 const DialogExercicio: React.FC<ModalProps> = ({ id }) => {
+  const BASE_URL = import.meta.env.VITE_API_URL;
   const dispatch = useDispatch();
   const msg = useRef<Messages>(null);
 
@@ -27,7 +28,7 @@ const DialogExercicio: React.FC<ModalProps> = ({ id }) => {
     };
 
     try {
-      const response = await fetch("http://localhost:8080/exercicios", {
+      const response = await fetch(`${BASE_URL}/exercicios`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
